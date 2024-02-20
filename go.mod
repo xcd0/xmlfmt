@@ -1,4 +1,4 @@
-module xmlfmt
+module github.com/xcd0/xmlfmt
 
 go 1.22.0
 

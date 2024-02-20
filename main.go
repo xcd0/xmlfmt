@@ -18,7 +18,7 @@ import (
 )
 
 var (
-	Version  string = "0.0.0"
+	Version  string = "0.0.1"
 	Revision        = func() string { // {{{
 		revision := ""
 		modified := false
@@ -44,7 +44,6 @@ var (
 )
 
 type Args struct {
-	//Input      string       `arg:"-i,--input"         help:"入力ファイル。"`
 	Input   []string `arg:"positional"         help:"入力ファイル。"`
 	Debug   bool     `arg:"-d,--debug"         help:"デバッグ用。ログが詳細になる。"`
 	Version bool     `arg:"-v,--version"       help:"バージョン情報を出力する。"`
@@ -76,7 +75,12 @@ func ShowHelp(post string) {
 	os.Exit(1)
 }
 func ShowVersion() {
-	fmt.Printf("%v version %v.%v\n", GetFileNameWithoutExt(os.Args[0]), Version, Revision)
+	if len(Revision) == 0 {
+		// go installでビルドされた場合、gitの情報がなくなる。その場合v0.0.0.のように末尾に.がついてしまうのを避ける。
+		fmt.Printf("%v version %v\n", GetFileNameWithoutExt(os.Args[0]), Version)
+	} else {
+		fmt.Printf("%v version %v.%v\n", GetFileNameWithoutExt(os.Args[0]), Version, Revision)
+	}
 	os.Exit(0)
 }
 func main() {
